@@ -6,7 +6,7 @@ app.use(express.json())
 let id = 1
 const series = {}
 
-app.post("/series", (req, res) => {
+app.post("/series", async (req, res) => {
     const { titulo, plataforma } = req.body
 
     if(!titulo || !plataforma){
@@ -18,12 +18,22 @@ app.post("/series", (req, res) => {
         plataforma: plataforma
     }
     series[id] = serie
+    await axios.post('http://localhost:10000/eventos', {
+        tipo: 'SerieCriada',
+        dados: serie
+    })
     id++
     return res.status(201).json(serie)
 })
 
 app.get("/series", function(req, res){
     res.json(series)
+})
+
+app.post('/eventos', (req, res) => {
+    const evento = req.body
+    console.log(evento.tipo)
+    res.end()
 })
 
 const port = 4000
