@@ -15,6 +15,11 @@ const funcoes = {
         comentarios.push(comentario)
         baseConsulta[comentario.serieId]['comentarios'] = comentarios
     },
+    ComentarioAtualizado: (comentario) => {
+        const comentarios = baseConsulta[comentario.serieId]['comentarios']
+        const indice = comentarios.findIndex(c => c.id === comentario.id)
+        comentarios[indice] = comentario
+    }
 }
 
 app.get('/series', (req, res) => {
