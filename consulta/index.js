@@ -47,4 +47,18 @@ app.post('/eventos', function(req, res){
 })
 
 const port = 4200
-app.listen(port, () => console.log(`Consulta. ${port}.`))
+app.listen(port, async () => {
+    console.log(`Consulta. Porta ${port}.`)
+    try{
+        const resp = await axios.get('http://localhost:10000/eventos')
+        resp.data.forEach((evento, indice, colecao) => {
+            try{
+            funcoes[evento.tipo](evento.dados)
+            }
+            catch(e){}
+        })
+    }
+    catch(e){
+        console.log('Barramento indisponível')
+    }
+})
