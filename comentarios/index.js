@@ -42,6 +42,21 @@ app.post('/series/:id/comentarios', async (req, res) => {
     return res.status(201).json(comentariosDaSerie)
 })
 
+app.put('/series/:id/comentarios/:idComentario', async (req, res) => {
+    const comentarioSerie = comentariosPorSerieId[req.params.id] || []
+    const comentario = comentarioSerie.find(c => c.id === req.params.idComentario)
+    if(!comentario){
+        return res.status(404).json({  erro: "comentário não encontrado" })
+    }
+    comentario.texto = req.body.texto
+    comentario.status = 'pendente'
+    await axios.post('http://localhost:10000/eventos', {
+        tipo: 'ComentarioEditado',
+        dados: comentario
+    })
+    return res.status(200).json(comentario)
+})
+
 app.get('/series/:id/comentarios', function(req, res){
     res.json(comentariosPorSerieId[req.params.id] || [])
 })
