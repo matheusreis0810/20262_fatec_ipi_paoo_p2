@@ -1,3 +1,4 @@
+const HOST = 'localhost'
 const axios = require('axios')
 const express = require('express')
 const app = express()
@@ -18,7 +19,7 @@ app.post("/series", async (req, res) => {
         plataforma: plataforma
     }
     series[id] = serie
-    await axios.post('http://localhost:10000/eventos', {
+    await axios.post(`http://${HOST}:10000/eventos`, {
         tipo: 'SerieCriada',
         dados: serie
     })
