@@ -11,7 +11,7 @@ const moderar = (comentario) => {
     for(let palavra of palavrasProibidas){
         if(comentario.texto.includes(palavra)) comentario.status = 'spoiler'
     }
-    axios.post('http://${HOST}:10000/eventos', {
+    axios.post(`http://${HOST}:10000/eventos`, {
         tipo: 'ComentarioModerado',
         dados: comentario
     })
